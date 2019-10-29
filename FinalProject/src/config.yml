@@ -1,0 +1,35 @@
+# Sort Configuration
+items:
+  - stone
+  - grass
+  - dirt
+  - cobblestone
+  - wood
+  - bedrock
+  - sand
+  - gravel
+  - gold_ore
+  - iron_ore
+  - coal_ore
+  - log
+  - leaves
+  - sponge
+  - glass
+  - lapis_ore
+  - lapis_block
+  - sandstone
+  - note_block
+  - wool
+  - gold_block
+  - iron_block
+  - quartz_block
+  - brick
+  - tnt
+  - bookshelf
+  - obsidian
+  - diamond_block
+  - diamond_ore
+  - redstone_ore
+  - redstone_block
+
+  

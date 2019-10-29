@@ -1,0 +1,7 @@
+main: org.janney.sort.Sort
+name: Sort
+version: 1.0.0
+commands:
+  sort:
+    usage: /sort
+    description: Sorts
