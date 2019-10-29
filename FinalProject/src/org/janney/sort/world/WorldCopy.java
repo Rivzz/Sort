@@ -29,7 +29,7 @@ public class WorldCopy
 		EditSession session = we.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(world), 100000);
 				
 		try {
-			MCEditSchematicFormat.getFormat(schematic).load(schematic).paste(session, new Vector(x, y, z), false);
+			MCEditSchematicFormat.getFormat(schematic).load(schematic).paste(session, new Vector(x, y, (z + 1)), false);
 		} catch (MaxChangedBlocksException | com.sk89q.worldedit.data.DataException | IOException e) {
 			e.printStackTrace();
 		}

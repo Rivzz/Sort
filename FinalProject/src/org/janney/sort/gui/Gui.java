@@ -65,7 +65,7 @@ public class Gui
 					break;
 				}
 			}
-		}.runTaskLater(plugin, 20*5);
+		}.runTaskLater(plugin, 20*2);
 	}
 	
 	private ItemStack build(String name, Material material)

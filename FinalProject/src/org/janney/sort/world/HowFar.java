@@ -1,21 +1,40 @@
 package org.janney.sort.world;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.janney.sort.SharedHash;
 import org.janney.sort.algorithms.Algorithms;
 
-public class HowFar extends SharedHash
+public class HowFar
 {
+	private Plugin plugin;
 	private Algorithms alg;
 	
 	public HowFar(Plugin plugin)
 	{
+		this.plugin = plugin;
 		alg = new Algorithms(plugin);
+	}
+	
+	public void clearConfig()
+	{
+		File file = new File(plugin.getDataFolder(), "data.yml");
+		FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+		
+		data.set("locations", null);
+		try {
+			data.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void checkNext(Block b)
@@ -25,23 +44,43 @@ public class HowFar extends SharedHash
 		World w = Bukkit.getWorld("world");
 		
 		if (locAdded.getBlock().getType() != Material.AIR)
-			getHowFarHash(w.getBlockAt(locAdded));
+			getHowFarStore(w.getBlockAt(locAdded));
 		else
 			alg.bubblyBlock();
 	}
 	
-	public void getHowFarHash(Block b)
-	{
+	public void getHowFarStore(Block b)
+	{	
 		Location loc = b.getLocation().clone();
-		int count = 0;
-	
-		while (hash.containsKey(count))
+		File file = new File(plugin.getDataFolder(), "data.yml");
+		FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+		int count = 0, distance = 0;
+		double y = loc.getBlockY();
+		
+		if (b.getType() != Material.AIR)
+			for (double i = y; i >= 0; i++)
+			{
+				loc.setY(i);
+				
+				if (!loc.getBlock().getType().isSolid())
+					break;
+				
+				distance++;
+			}
+		
+		while (data.contains("locations." + count))
 		{
 			count++;
 		}
 		
-		hash.put(count, loc);
-	
+		data.set("locations." + count + ".distance", distance);
+		data.set("locations." + count + ".location", loc.add(0, -distance, 0));
+		try {
+			data.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		checkNext(b);
 	}
 }

@@ -22,6 +22,7 @@ public class Sort extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new GuiModify(), this);
 		
 		generateConfig("config");
+		generateConfig("data");
 	}
 	
 	private void generateConfig(String name)

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.janney.sort.algorithms.Algorithms;
 import org.janney.sort.gui.Gui;
 import org.janney.sort.world.HowFar;
 
@@ -22,12 +23,14 @@ public class Placeholder implements CommandExecutor
 	private Plugin plugin;
 	private Gui gui;
 	private HowFar distance;
+	private Algorithms alg;
 	
 	public Placeholder(Plugin plugin)
 	{
 		this.plugin = plugin;
 		gui = new Gui(plugin);
 		distance = new HowFar(plugin);
+		alg = new Algorithms(plugin);
 	}
 	
 	@Override
@@ -38,7 +41,7 @@ public class Placeholder implements CommandExecutor
 		
 		Player p = (Player) sender;
 		World w = p.getWorld();
-		Block b = w.getBlockAt(-5, 200, 0);
+		Block b = w.getBlockAt(0, 200, 0);
 		
 		if (commandLabel.equalsIgnoreCase("sort"))
 		{
@@ -50,7 +53,16 @@ public class Placeholder implements CommandExecutor
 					gui.openGui(p, args[0]);
 				
 				if (args[0].equalsIgnoreCase("check"))
-					distance.getHowFarHash(b);
+				{
+					// Calls distance at point 0 in world
+					distance.clearConfig();
+					distance.getHowFarStore(b);
+				}
+				
+				if (args[0].equalsIgnoreCase("random"))
+				{
+					alg.random();
+				}
 			}
 		}
 		return true;

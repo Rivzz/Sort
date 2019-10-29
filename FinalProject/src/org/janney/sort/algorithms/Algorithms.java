@@ -1,13 +1,21 @@
 package org.janney.sort.algorithms;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.janney.sort.SharedHash;
 import org.janney.sort.gui.GuiModify;
 import org.janney.sort.world.WorldCopy;
 
@@ -17,7 +25,7 @@ import org.janney.sort.world.WorldCopy;
  */
 
 @SuppressWarnings("deprecation")
-public class Algorithms extends SharedHash
+public class Algorithms
 {
 	private Plugin plugin;
 	private GuiModify gui;
@@ -28,70 +36,93 @@ public class Algorithms extends SharedHash
 		gui = new GuiModify();
 	}
 	
+	public void random()
+	{
+		World w = Bukkit.getWorld("world");
+		Block b = w.getBlockAt(0, 200, 0);
+		Location loc = b.getLocation();
+		Random random = new Random();
+		ArrayList<Integer> nums = new ArrayList<Integer>();
+		
+		for (int i = 0; i < 10; i++)
+		{
+			nums.add(i + 1);
+		}
+		
+		Bukkit.broadcastMessage("ArrayList: " + nums);
+		
+		for (int j = 0; j < 10; j++)
+		{
+			int randNum = random.nextInt(10 - 1) + 1;
+			
+			WorldCopy.copy(11, loc);
+			WorldCopy.copy(randNum, loc);
+			
+			loc.add(2, 0, 0);
+		}
+	}
+	
 	public void bubblyBlock()
 	{	
-		Bukkit.broadcastMessage(hash.toString());
+		File file = new File(plugin.getDataFolder(), "data.yml");
+		FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+		int count = 0;
 		
+		while (data.contains("locations." + count))
+		{
+			count++;
+		}
+		
+		int end = count;
+			
 		new BukkitRunnable()
 		{
-			int limit = hash.size(), count = 1, sortedCount = 0;
+			int limit = 1, sortedCount = 0;
 			
 			@Override
 			public void run() 
 			{	
-				if (count != limit)
-				{	
-					Location right = hash.get(count);
-					Location left = hash.get(count - 1);
+				if (limit != end)
+				{
+					int right = data.getInt("locations." + limit + ".distance");
+					int left = data.getInt("locations." + (limit - 1) + ".distance");
 					
-					Bukkit.broadcastMessage("Right Location value is " + right);
-					Bukkit.broadcastMessage("Left Location value is " + left);
-					
-					int rightAmount = getHowFar(right.getBlock());
-					int leftAmount = getHowFar(left.getBlock());
-					
-					Bukkit.broadcastMessage("Right Amount value is " + rightAmount);
-					Bukkit.broadcastMessage("Left Amount value is " + leftAmount);
-					
-					Location pasteRight = right.add(0, 0, 1);
-					Location pasteLeft = left.add(0, 0, 1);
-					
-					if (rightAmount < leftAmount) 
+					if (right < left)
 					{
+						Bukkit.broadcastMessage("Swapping");
 						sortedCount = 0;
 						
-						Bukkit.broadcastMessage("Right is great than left *Swapping*");
-				
-						WorldCopy.copy(11, pasteLeft);
-						WorldCopy.copy(11, pasteRight);
-						WorldCopy.copy(rightAmount, pasteLeft);
-						WorldCopy.copy(leftAmount, pasteRight);
+						WorldCopy.copy(11, (Location) data.get("locations." + limit + ".location")); 
+						WorldCopy.copy(11, (Location) data.get("locations." + (limit - 1) + ".location"));
 						
-						hash.remove(count);
-						hash.remove(count - 1);
+						WorldCopy.copy(right, (Location) data.get("locations." + (limit - 1) + ".location"));
+						WorldCopy.copy(left, (Location) data.get("locations." + limit + ".location"));
 						
-						hash.put(count, left);
-						hash.put(count - 1, right);
+						data.set("locations." + limit + ".distance", left);
+						data.set("locations." + (limit - 1) + ".distance", right);
 						
-						Bukkit.broadcastMessage(hash.toString());
+						try {
+							data.save(file);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 					else
 						sortedCount += 1;
 					
-					if (sortedCount == limit)
+					if (sortedCount == end)
 					{
-						Bukkit.broadcastMessage("Sorted");
-						hash.clear();
+						Bukkit.broadcastMessage("Sorted Blocks");
 						cancel();
 					}
 					
-					count++;
+					limit++;
 				}
 				else
-					count = 1;
+					limit = 1;
 			}
 			
-		}.runTaskTimer(plugin, 0, 20*2);
+		}.runTaskTimer(plugin, 0, 10);
 	}
 	
 	/*
