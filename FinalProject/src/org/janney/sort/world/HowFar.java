@@ -13,6 +13,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.janney.sort.algorithms.Algorithms;
 
+/*
+ * Calculating distance of block to sky
+ * @clearConfig(): Clears data.yml
+ * @getHowFarStore(): Gets distance of coordinates to sky, saves data.yml
+ * @checkNext(): Determines if block exists next to other
+ */
+
 public class HowFar
 {
 	private Plugin plugin;

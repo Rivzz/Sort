@@ -14,6 +14,11 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 
+/*
+ * Copies schematic at desired location
+ * @Modifications: All pasted blocks are (0,0,1) from origin location
+ */
+
 public class WorldCopy 
 {
 	@SuppressWarnings("deprecation")

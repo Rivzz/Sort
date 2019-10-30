@@ -2,8 +2,9 @@ package org.janney.sort.algorithms;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,7 +22,9 @@ import org.janney.sort.world.WorldCopy;
 
 /*
  * Sorting algorithms
- * @ [bubbly]: Lowest - Highest item id
+ * @random(): Puts visual stack in random order
+ * @bubblyBlock(): Visual bubble algorithm
+ * @bubblyInventory(): GUI bubble algorithm
  */
 
 @SuppressWarnings("deprecation")
@@ -41,23 +44,18 @@ public class Algorithms
 		World w = Bukkit.getWorld("world");
 		Block b = w.getBlockAt(0, 200, 0);
 		Location loc = b.getLocation();
-		Random random = new Random();
-		ArrayList<Integer> nums = new ArrayList<Integer>();
+		Integer[] nums = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+		List<Integer> numsList = Arrays.asList(nums);
 		
-		for (int i = 0; i < 10; i++)
-		{
-			nums.add(i + 1);
-		}
-		
-		Bukkit.broadcastMessage("ArrayList: " + nums);
+		Collections.shuffle(numsList);
 		
 		for (int j = 0; j < 10; j++)
 		{
-			int randNum = random.nextInt(10 - 1) + 1;
+			int i = numsList.get(j);
 			
 			WorldCopy.copy(11, loc);
-			WorldCopy.copy(randNum, loc);
-			
+			WorldCopy.copy(i, loc);
+
 			loc.add(2, 0, 0);
 		}
 	}
@@ -89,7 +87,6 @@ public class Algorithms
 					
 					if (right < left)
 					{
-						Bukkit.broadcastMessage("Swapping");
 						sortedCount = 0;
 						
 						WorldCopy.copy(11, (Location) data.get("locations." + limit + ".location")); 
@@ -112,7 +109,7 @@ public class Algorithms
 					
 					if (sortedCount == end)
 					{
-						Bukkit.broadcastMessage("Sorted Blocks");
+						Bukkit.broadcastMessage("All stacks sorted");
 						cancel();
 					}
 					
@@ -122,14 +119,8 @@ public class Algorithms
 					limit = 1;
 			}
 			
-		}.runTaskTimer(plugin, 0, 10);
+		}.runTaskTimer(plugin, 0, 5);
 	}
-	
-	/*
-	 * [bubbly]: Looped @ 0 ticks
-	 * @ [limit]: Slots in the inventory
-	 * @ [sortedCount]: If count == inventory size, cancel
-	 */
 	
 	public void bubblyInventory(Inventory i, Player p)
 	{	

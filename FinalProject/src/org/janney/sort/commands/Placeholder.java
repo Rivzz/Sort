@@ -14,7 +14,10 @@ import org.janney.sort.world.HowFar;
 
 /*
  * Placeholder commands
- * @ [sort]: Opens GUI & runs algorithm
+ * @ [sort]: Root command
+ * @ [gui] [bubbly]: Bubble sort for GUI
+ * @ [visual] [bubbly]: Bubble sort for VISUAL
+ * @ [random]: Organizes visual sort RANDOM
  */
 
 public class Placeholder implements CommandExecutor
@@ -46,30 +49,31 @@ public class Placeholder implements CommandExecutor
 		if (commandLabel.equalsIgnoreCase("sort"))
 		{
 			if (args.length == 0)
-				helpMessage(p);
+			{
+				p.sendMessage(ChatColor.RED + "Sort Syntax: /sort (visual|gui) (bubbly)");
+				p.sendMessage(ChatColor.RED + "Sort Syntax: /sort (random)");
+			}
+			
 			if (args.length == 1)
 			{
-				if (args[0].equalsIgnoreCase("bubbly"))
-					gui.openGui(p, args[0]);
-				
-				if (args[0].equalsIgnoreCase("check"))
-				{
-					// Calls distance at point 0 in world
-					distance.clearConfig();
-					distance.getHowFarStore(b);
-				}
-				
 				if (args[0].equalsIgnoreCase("random"))
-				{
 					alg.random();
-				}
+			}
+			
+			if (args.length == 2)
+			{
+				if (args[0].equalsIgnoreCase("gui"))
+					if (args[1].equalsIgnoreCase("bubbly"))
+						gui.openGui(p, args[1]);
+				
+				if (args[0].equalsIgnoreCase("visual"))
+					if (args[1].equalsIgnoreCase("bubbly"))
+					{
+						distance.clearConfig();
+						distance.getHowFarStore(b);
+					}
 			}
 		}
 		return true;
-	}
-
-	private void helpMessage(Player p)
-	{
-		p.sendMessage(ChatColor.RED + "Sort Syntax: /sort (bubbly|test)");
 	}
 }

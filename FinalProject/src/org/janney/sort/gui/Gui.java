@@ -19,6 +19,8 @@ import org.janney.sort.algorithms.Algorithms;
 
 /*
  * Opens virtual inventory
+ * @build(): Names items in slot origin
+ * @openGui(): Opens inventory with random items from config.yml
  */
 
 public class Gui 
@@ -30,6 +32,17 @@ public class Gui
 	{
 		this.plugin = plugin;
 		alg = new Algorithms(plugin);
+	}
+	
+	private ItemStack build(String name, Material material)
+	{
+		ItemStack item = new ItemStack(material);
+		ItemMeta meta = item.getItemMeta();
+		
+		meta.setDisplayName(name);
+		item.setItemMeta(meta);
+		
+		return item;
 	}
 	
 	public void openGui(Player p, String algorithm)
@@ -66,16 +79,5 @@ public class Gui
 				}
 			}
 		}.runTaskLater(plugin, 20*2);
-	}
-	
-	private ItemStack build(String name, Material material)
-	{
-		ItemStack item = new ItemStack(material);
-		ItemMeta meta = item.getItemMeta();
-		
-		meta.setDisplayName(name);
-		item.setItemMeta(meta);
-		
-		return item;
 	}
 }
