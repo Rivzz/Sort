@@ -10,6 +10,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.janney.sort.commands.Placeholder;
 import org.janney.sort.gui.GuiModify;
 
+/*
+ * Update from Ace
+ */
+
 public class Sort extends JavaPlugin
 {
 	private File file;
