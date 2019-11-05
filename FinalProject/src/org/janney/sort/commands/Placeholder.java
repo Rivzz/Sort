@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.janney.sort.algorithms.Algorithms;
 import org.janney.sort.gui.Gui;
+import org.janney.sort.sheep.SheepEntity;
 import org.janney.sort.world.HowFar;
 
 /*
@@ -58,6 +59,15 @@ public class Placeholder implements CommandExecutor
 			{
 				if (args[0].equalsIgnoreCase("random"))
 					alg.random();
+				
+				if (args[0].equalsIgnoreCase("sheep"))
+					SheepEntity.spawnSheep();
+				
+				if (args[0].equalsIgnoreCase("removesheep"))
+					SheepEntity.removeSheep();
+				
+				if (args[0].equalsIgnoreCase("walksheep"))
+					SheepEntity.sheepWalk(p, p.getLocation());
 			}
 			
 			if (args.length == 2)

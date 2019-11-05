@@ -9,10 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.janney.sort.commands.Placeholder;
 import org.janney.sort.gui.GuiModify;
-
-/*
- * Update from Ace
- */
+import org.janney.sort.sheep.EntityDamage;
 
 public class Sort extends JavaPlugin
 {
@@ -24,6 +21,7 @@ public class Sort extends JavaPlugin
 	{
 		getCommand("sort").setExecutor(new Placeholder(this));
 		getServer().getPluginManager().registerEvents(new GuiModify(), this);
+		getServer().getPluginManager().registerEvents(new EntityDamage(), this);
 		
 		generateConfig("config");
 		generateConfig("data");

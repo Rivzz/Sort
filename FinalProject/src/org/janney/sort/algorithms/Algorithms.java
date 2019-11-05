@@ -49,7 +49,7 @@ public class Algorithms
 		
 		Collections.shuffle(numsList);
 		
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < numsList.size(); j++)
 		{
 			int i = numsList.get(j);
 			
