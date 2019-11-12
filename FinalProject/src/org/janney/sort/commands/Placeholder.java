@@ -28,6 +28,7 @@ public class Placeholder implements CommandExecutor
 	private Gui gui;
 	private HowFar distance;
 	private Algorithms alg;
+	private SheepEntity sheep;
 	
 	public Placeholder(Plugin plugin)
 	{
@@ -35,6 +36,7 @@ public class Placeholder implements CommandExecutor
 		gui = new Gui(plugin);
 		distance = new HowFar(plugin);
 		alg = new Algorithms(plugin);
+		sheep = new SheepEntity(plugin);
 	}
 	
 	@Override
@@ -67,7 +69,7 @@ public class Placeholder implements CommandExecutor
 					SheepEntity.removeSheep();
 				
 				if (args[0].equalsIgnoreCase("walksheep"))
-					SheepEntity.sheepWalk(p, p.getLocation());
+					sheep.sheepWalk(p);
 			}
 			
 			if (args.length == 2)

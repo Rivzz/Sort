@@ -15,12 +15,23 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.janney.sort.world.HowFar;
 
 import net.minecraft.server.v1_8_R1.NBTTagCompound;
 
 public class SheepEntity 
 {
 	private static ArrayList<Entity> entities = new ArrayList<Entity>();
+	private Plugin plugin;
+	private HowFar distance;
+	
+	public SheepEntity(Plugin plugin)
+	{
+		this.plugin = plugin;
+		distance = new HowFar(plugin);
+	}
 	
 	public static void removeSheep()
 	{	
@@ -33,16 +44,86 @@ public class SheepEntity
 				}
 	}
 	
-	public static void sheepWalk(Player p, Location loc)
+	public void sheepWalk(Player p)
 	{
 		for (World world : Bukkit.getWorlds())
 			for (Entity e : world.getEntities())
 				if (e.getType() == EntityType.SHEEP)
-				{
+				{	
 					Sheep sheep = (Sheep) entities.get(0);
+					Sheep sheep1 = (Sheep) entities.get(1);
 					
-					unFreezeEntity(sheep);
-					sheep.setTarget(p);
+					new BukkitRunnable()
+					{
+						int count = 0;
+						
+						@Override
+						public void run() 
+						{	
+							if (count == 0)
+							{
+								Block b1 = Bukkit.getWorld("world").getBlockAt(0, 200, 17);
+								Location loc = b1.getLocation().add(0.5, 0, 0.5);
+								
+								distance.moveNextTick(sheep, loc);
+							}
+							
+							if (count == 1)
+							{
+								Block b2 = Bukkit.getWorld("world").getBlockAt(2, 200, 17);
+								Location loc2 = b2.getLocation().add(0.5, 0, 0.5);
+								
+								distance.moveNextTick(sheep, loc2);
+							}
+							
+							if (count == 2)
+							{
+								Block b3 = Bukkit.getWorld("world").getBlockAt(2, 200, 15);
+								Location loc3 = b3.getLocation().add(0.5, 0, 0.5);
+								
+								distance.moveNextTick(sheep, loc3);
+							}
+							
+							count++;
+						}
+						
+					}.runTaskTimer(plugin, 0, 20*2);
+					
+					new BukkitRunnable()
+					{
+						int count = 0;
+						
+						@Override
+						public void run() 
+						{	
+							if (count == 0)
+							{
+								Block b1 = Bukkit.getWorld("world").getBlockAt(2, 200, 17);
+								Location loc = b1.getLocation().add(0.5, 0, 0.5);
+								
+								distance.moveNextTick(sheep1, loc);
+							}
+							
+							if (count == 1)
+							{
+								Block b2 = Bukkit.getWorld("world").getBlockAt(0, 200, 17);
+								Location loc2 = b2.getLocation().add(0.5, 0, 0.5);
+								
+								distance.moveNextTick(sheep1, loc2);
+							}
+							
+							if (count == 2)
+							{
+								Block b3 = Bukkit.getWorld("world").getBlockAt(0, 200, 15);
+								Location loc3 = b3.getLocation().add(0.5, 0, 0.5);
+								
+								distance.moveNextTick(sheep1, loc3);
+							}
+							
+							count++;
+						}
+						
+					}.runTaskTimer(plugin, 0, 20*2);
 				}
 	}
 	
@@ -111,14 +192,11 @@ public class SheepEntity
 			
 			freezeEntity(sheep);
 			entities.add(sheep);
-			
-			Bukkit.broadcastMessage(entities.toString());
-			
 			loc.add(2, 0, 0);
 		}
 	}
 	
-	  private static void freezeEntity(Entity e)
+	  public static void freezeEntity(Entity e)
 	  {
 	      net.minecraft.server.v1_8_R1.Entity nmsEn = ((CraftEntity) e).getHandle();
 	      NBTTagCompound compound = new NBTTagCompound();
@@ -127,7 +205,7 @@ public class SheepEntity
 	      nmsEn.f(compound);
 	  }
 	  
-	private static void unFreezeEntity(Entity e)
+	  public static void unFreezeEntity(Entity e)
 	  {
 	      net.minecraft.server.v1_8_R1.Entity nmsEn = ((CraftEntity) e).getHandle();
 	      NBTTagCompound compound = new NBTTagCompound();
