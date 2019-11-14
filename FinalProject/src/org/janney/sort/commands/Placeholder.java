@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.janney.sort.algorithms.Algorithms;
 import org.janney.sort.gui.Gui;
 import org.janney.sort.sheep.SheepEntity;
@@ -36,7 +37,7 @@ public class Placeholder implements CommandExecutor
 		gui = new Gui(plugin);
 		distance = new HowFar(plugin);
 		alg = new Algorithms(plugin);
-		sheep = new SheepEntity(plugin);
+		sheep = new SheepEntity();
 	}
 	
 	@Override
@@ -63,13 +64,27 @@ public class Placeholder implements CommandExecutor
 					alg.random();
 				
 				if (args[0].equalsIgnoreCase("sheep"))
-					SheepEntity.spawnSheep();
-				
-				if (args[0].equalsIgnoreCase("removesheep"))
+				{
 					SheepEntity.removeSheep();
-				
-				if (args[0].equalsIgnoreCase("walksheep"))
-					sheep.sheepWalk(p);
+					
+					new BukkitRunnable()
+					{
+						@Override
+						public void run()
+						{
+							SheepEntity.spawnSheep();
+						}
+					}.runTaskLater(plugin, 5);
+					
+					new BukkitRunnable()
+					{
+						@Override
+						public void run() 
+						{
+							alg.bubblySheep(sheep.getArrayList());
+						}
+					}.runTaskLater(plugin, 20);
+				}
 			}
 			
 			if (args.length == 2)

@@ -10,12 +10,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 import org.janney.sort.algorithms.Algorithms;
-import org.janney.sort.sheep.SheepEntity;
 
 /*
  * Calculating distance of block to sky
@@ -93,29 +89,5 @@ public class HowFar
 		}
 		
 		checkNext(b);
-	}
-	
-	public void moveNextTick(Entity e, Location loc)
-	{	
-		SheepEntity.unFreezeEntity(e);
-		
-		new BukkitRunnable()
-		{
-			@Override
-			public void run() 
-			{	
-				Vector copyPos = e.getLocation().toVector();
-				Vector copyTarget = loc.toVector();
-				Vector velocityCopy = copyTarget.subtract(copyPos);
-				
-				if (e.getLocation().distance(loc) < 0.1)
-				{
-				SheepEntity.freezeEntity(e);
-				cancel();
-				}
-				
-				e.setVelocity(velocityCopy.normalize().multiply(0.2));
-			}
-		}.runTaskTimer(plugin, 0, 0);
 	}
 }
