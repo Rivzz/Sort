@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.janney.sort.algorithms.Algorithms;
 import org.janney.sort.gui.Gui;
 import org.janney.sort.sheep.SheepEntity;
+import org.janney.sort.world.Holograms;
 import org.janney.sort.world.HowFar;
 
 /*
@@ -24,12 +25,12 @@ import org.janney.sort.world.HowFar;
 
 public class Placeholder implements CommandExecutor
 {
-	@SuppressWarnings("unused")
 	private Plugin plugin;
 	private Gui gui;
 	private HowFar distance;
 	private Algorithms alg;
 	private SheepEntity sheep;
+	private Holograms holo;
 	
 	public Placeholder(Plugin plugin)
 	{
@@ -38,6 +39,7 @@ public class Placeholder implements CommandExecutor
 		distance = new HowFar(plugin);
 		alg = new Algorithms(plugin);
 		sheep = new SheepEntity();
+		holo = new Holograms(plugin);
 	}
 	
 	@Override
@@ -99,6 +101,37 @@ public class Placeholder implements CommandExecutor
 						distance.clearConfig();
 						distance.getHowFarStore(b);
 					}
+			}
+			
+			if (args.length >= 3)
+			{
+				if (args[0].equalsIgnoreCase("hologram"))
+				{
+					if (args[1].equalsIgnoreCase("create"))
+						if (!args[2].isEmpty())
+						{
+							String string = "";
+							
+							for (int i = 2; i < args.length; i++)
+							{
+								string = string + args[i] + " ";
+							}
+							
+							holo.createHologram(p, string);
+							
+						}
+					
+					if (args[1].equalsIgnoreCase("delete"))
+						if (!args[2].isEmpty())
+						{
+							try {
+								holo.deleteHologram(p, Integer.valueOf(args[2]));
+							} catch (NumberFormatException e) {
+								p.sendMessage("Hologram " + args[2] + " doesn't exist");
+							}
+						}
+				}
+				
 			}
 		}
 		return true;

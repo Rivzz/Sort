@@ -10,7 +10,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -19,7 +19,7 @@ import org.bukkit.entity.Slime;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
 public class SheepEntity 
 {
@@ -134,7 +134,7 @@ public class SheepEntity
 	
 	public static void freezeEntity(Entity e)
 	{
-		net.minecraft.server.v1_8_R1.Entity nmsEn = ((CraftEntity) e).getHandle();
+		net.minecraft.server.v1_8_R3.Entity nmsEn = ((CraftEntity) e).getHandle();
 		NBTTagCompound compound = new NBTTagCompound();
 		nmsEn.c(compound);
 		compound.setByte("NoAI", (byte) 1);
@@ -143,7 +143,7 @@ public class SheepEntity
 	
 	public static void unFreezeEntity(Entity e)
 	{
-		net.minecraft.server.v1_8_R1.Entity nmsEn = ((CraftEntity) e).getHandle();
+		net.minecraft.server.v1_8_R3.Entity nmsEn = ((CraftEntity) e).getHandle();
 		NBTTagCompound compound = new NBTTagCompound();
 		nmsEn.c(compound);
 		compound.setByte("NoAI", (byte) 0);

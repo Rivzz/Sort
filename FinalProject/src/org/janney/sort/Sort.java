@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.janney.sort.commands.Placeholder;
 import org.janney.sort.gui.GuiModify;
 import org.janney.sort.sheep.EntityDamage;
+import org.janney.sort.world.Teleport;
 
 public class Sort extends JavaPlugin
 {
@@ -22,6 +23,7 @@ public class Sort extends JavaPlugin
 		getCommand("sort").setExecutor(new Placeholder(this));
 		getServer().getPluginManager().registerEvents(new GuiModify(), this);
 		getServer().getPluginManager().registerEvents(new EntityDamage(), this);
+		getServer().getPluginManager().registerEvents(new Teleport(), this);
 		
 		generateConfig("config");
 		generateConfig("data");
@@ -47,4 +49,5 @@ public class Sort extends JavaPlugin
 			e.printStackTrace();
 		}
 	}
+	
 }
