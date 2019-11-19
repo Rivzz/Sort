@@ -50,56 +50,59 @@ public class Placeholder implements CommandExecutor
 		
 		Player p = (Player) sender;
 		World w = p.getWorld();
-		Block b = w.getBlockAt(0, 200, 0);
+		Block b = w.getBlockAt(-9, 201, -511);
 		
 		if (commandLabel.equalsIgnoreCase("sort"))
 		{
 			if (args.length == 0)
 			{
-				p.sendMessage(ChatColor.RED + "Sort Syntax: /sort (visual|gui) (bubbly)");
-				p.sendMessage(ChatColor.RED + "Sort Syntax: /sort (random)");
-			}
-			
-			if (args.length == 1)
-			{
-				if (args[0].equalsIgnoreCase("random"))
-					alg.random();
-				
-				if (args[0].equalsIgnoreCase("sheep"))
-				{
-					SheepEntity.removeSheep();
-					
-					new BukkitRunnable()
-					{
-						@Override
-						public void run()
-						{
-							SheepEntity.spawnSheep();
-						}
-					}.runTaskLater(plugin, 5);
-					
-					new BukkitRunnable()
-					{
-						@Override
-						public void run() 
-						{
-							alg.bubblySheep(sheep.getArrayList());
-						}
-					}.runTaskLater(plugin, 20);
-				}
+				p.sendMessage(ChatColor.RED + "Sort Syntax: /sort (visual|gui|sheep) (bubbly)");
 			}
 			
 			if (args.length == 2)
 			{
 				if (args[0].equalsIgnoreCase("gui"))
-					if (args[1].equalsIgnoreCase("bubbly"))
+					if (args[1].equalsIgnoreCase("bubble"))
 						gui.openGui(p, args[1]);
 				
 				if (args[0].equalsIgnoreCase("visual"))
-					if (args[1].equalsIgnoreCase("bubbly"))
+					if (args[1].equalsIgnoreCase("bubble"))
 					{
-						distance.clearConfig();
-						distance.getHowFarStore(b);
+						alg.random(b);
+						
+						new BukkitRunnable()
+						{
+							@Override
+							public void run() 
+							{
+								distance.clearConfig();
+								distance.getHowFarStore(b);
+							}
+						}.runTaskLater(plugin, 20);
+					}
+				
+				if (args[0].equalsIgnoreCase("sheep"))
+					if (args[1].equalsIgnoreCase("bubble"))
+					{
+						SheepEntity.removeSheep();
+						
+						new BukkitRunnable()
+						{
+							@Override
+							public void run()
+							{
+								SheepEntity.spawnSheep();
+							}
+						}.runTaskLater(plugin, 5);
+						
+						new BukkitRunnable()
+						{
+							@Override
+							public void run() 
+							{
+								alg.bubblySheep(sheep.getArrayList());
+							}
+						}.runTaskLater(plugin, 20);
 					}
 			}
 			

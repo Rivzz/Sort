@@ -45,10 +45,8 @@ public class Algorithms
 		gui = new GuiModify();
 	}
 	
-	public void random()
+	public void random(Block b)
 	{
-		World w = Bukkit.getWorld("world");
-		Block b = w.getBlockAt(0, 200, 0);
 		Location loc = b.getLocation();
 		Integer[] nums = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		List<Integer> numsList = Arrays.asList(nums);
@@ -319,6 +317,8 @@ public class Algorithms
 	
 	public void bubblyInventory(Inventory i, Player p)
 	{	
+		gui.setList(p);
+		
 		new BukkitRunnable()
 		{
 			int limit = 1, sortedCount = 0;

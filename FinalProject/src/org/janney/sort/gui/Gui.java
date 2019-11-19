@@ -73,7 +73,7 @@ public class Gui
 			{
 				switch (algorithm)
 				{
-				case "bubbly":
+				case "bubble":
 					alg.bubblyInventory(i, p);
 					break;
 				}

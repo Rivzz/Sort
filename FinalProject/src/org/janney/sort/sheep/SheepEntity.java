@@ -34,16 +34,25 @@ public class SheepEntity
 	{	
 		for (World world : Bukkit.getWorlds())
 			for (Entity e : world.getEntities())
-				if (e.getType() == EntityType.SHEEP || e.getType() == EntityType.SLIME || e.getType() == EntityType.ARMOR_STAND)
-				{
+			{
+				if (e.getType() == EntityType.SHEEP || e.getType() == EntityType.SLIME)
 					e.remove();
-					entities.clear();
-				}
+				
+				if (e.getType() == EntityType.ARMOR_STAND)
+					if (e.getCustomName().equalsIgnoreCase("1") || e.getCustomName().equalsIgnoreCase("2")
+							|| e.getCustomName().equalsIgnoreCase("3") || e.getCustomName().equalsIgnoreCase("4")
+							|| e.getCustomName().equalsIgnoreCase("5") || e.getCustomName().equalsIgnoreCase("6")
+							|| e.getCustomName().equalsIgnoreCase("7") || e.getCustomName().equalsIgnoreCase("8")
+							|| e.getCustomName().equalsIgnoreCase("9") || e.getCustomName().equalsIgnoreCase("10"))
+						e.remove();	
+			}	
+		
+		entities.clear();
 	}
 	
 	public static void spawnSheep()
 	{
-		Block b = Bukkit.getWorld("world").getBlockAt(0, 200, 15);
+		Block b = Bukkit.getWorld("world").getBlockAt(-9, 200, 489); // -9, 200, 489
 		Location loc = b.getLocation();
 		Integer[] nums = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		List<Integer> numsList = Arrays.asList(nums);
